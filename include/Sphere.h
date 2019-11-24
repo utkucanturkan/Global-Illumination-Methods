@@ -2,12 +2,12 @@
 
 struct Sphere : public Entity {
 
-	Sphere(glm::dvec3 _position, float _radius, Material _material)
+	Sphere(const glm::dvec3& _position, const float& _radius, const Material& _material)
         : Entity(_material), radius(_radius) {
         pos = _position;
 	}
 
-    bool intersect(const Ray& ray, glm::dvec3& intersect, glm::dvec3& normal) { 
+    bool intersect(const Ray& ray, glm::dvec3& intersect, glm::dvec3& normal) override { 
 		
 		glm::dvec3 l = pos - ray.origin;
         float tca = glm::dot(l, ray.dir);
