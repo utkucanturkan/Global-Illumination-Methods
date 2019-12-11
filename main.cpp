@@ -10,32 +10,40 @@
 int main(int argc, char** argv) {
     QApplication app(argc, argv);
 
-    // Camera camera({10, 10, 0});
-    Camera camera({-10, 0, 0});
+    // x, y, z
+    Camera camera({0, 0, 20});
 
-    glm::dvec3 light{10, 10, 10};
+    glm::dvec3 light{0, 0, 10};
 
     RayTracer raytracer(camera, light);
 
-    Sphere* greenSphere = &Sphere({10, -2, 0}, 1.0f, Material({0, 1, 0}));
-    Sphere* blueSphere = &Sphere({10, 0, -2}, 1.0f, Material({0, 0, 1}));
-    Sphere* redSphere = &Sphere({10, 2, 0}, 1.0f, Material({1, 0, 0}));
-    Sphere* yellowSphere = &Sphere({10, 0, 2}, 1.0f, Material({0.9, 0.9, 0.1}));
+    // Materials
+    Material ivory(glm::dvec3(0.4, 0.4, 0.3), 1.0, glm::dvec4(0.6, 0.3, 0.1, 0.0), 50.);
+    Material glass(glm::dvec3(0.6, 0.7, 0.8), 1.5, glm::dvec4(0.0, 0.5, 0.1, 0.8), 125.);
+    Material red_rubber(glm::dvec3(1, 0, 0), 1.0, glm::dvec4(0.9, 0.1, 0.0, 0.0), 10.);
+    Material mirror(glm::dvec3(1.0, 1.0, 1.0), 1.0, glm::dvec4(0.0, 10.0, 0.8, 0.0), 1425.);
 
-    Triangle* bluetriangle = &Triangle({10, 0, -2}, {10, 2, -2}, {10, 0, -4}, Material({0, 0, 1}));
-    Triangle* redtriangle = &Triangle({10, 1, 2}, {10, -1, 2}, {10, 1, 4}, Material({1, 0, 0}));
+    // x, y, z
+    Sphere* ivorySphere = &Sphere({-3, 0, -6}, 2, ivory);
+    Sphere* glassSphere = &Sphere({0, 3, -6}, 2, glass);
+    Sphere* redRubberSphere = &Sphere({3, 0, -6}, 2, red_rubber);
+    Sphere* mirrorSphere = &Sphere({0, -3, -6}, 2, mirror);
+
+    // Triangle* bluetriangle = &Triangle({0, 0, -5}, {2, 0, -5}, {2, 2, -5}, Material({1, 0, 0}));
+    // Triangle* redtriangle = &Triangle({-5, -1, -1}, {-5, -1, 1}, {-5, 1, 0}, Material({1, 0,
+    // 0}));
 
     // Set up scene
     Octree scene({-20, -20, -20}, {20, 20, 20});
 
     // TODO Add objects to the scene
-    scene.push_back(greenSphere);
-    scene.push_back(blueSphere);
-    scene.push_back(redSphere);
-    scene.push_back(yellowSphere);
+    scene.push_back(ivorySphere);
+    scene.push_back(redRubberSphere);
+    scene.push_back(glassSphere);
+    scene.push_back(mirrorSphere);
 
-    scene.push_back(bluetriangle);
-    scene.push_back(redtriangle);
+    // scene.push_back(bluetriangle);
+    // scene.push_back(redtriangle);
 
     raytracer.setScene(&scene);
 

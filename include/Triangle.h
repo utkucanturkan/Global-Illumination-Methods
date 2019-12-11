@@ -38,7 +38,7 @@ struct Triangle : public Entity {
             return false;
 
 		double t = glm::dot(ac, qvec) * invDet;
-
+        intersect.x = t;
         return (t > EPS) ? true : false;
     }
 

@@ -15,22 +15,22 @@ struct Sphere : public Entity {
         float c = glm::dot(oc, oc) - pow(radius, 2);
         float discriminant = pow(b, 2) - 4 * a * c;
 
-        float x0, x1;
-
-        if (discriminant < 0) {
+        // the ray does not intersect
+        if (discriminant <= 0) {
             return false;
-        } else if (discriminant == 0) {
-            x0 = x1 = -0.5 * b / a;
-        } else {
-            float q = (b > 0) ? -0.5 * (b + sqrt(discriminant)) : -0.5 * ((float)b - sqrt(discriminant));
-            x0 = q / a;
-            x1 = c / q;
         }
 
-        if (x0 > x1) {
-            std::swap(x0, x1);
+        // Find two points of intersection, t1 close and t2 far
+        float t1 = (-b - std::sqrt(discriminant)) / (2 * a);
+        float t2 = (-b + std::sqrt(discriminant)) / (2 * a);
+
+        if (t1 > t2) {
+            std::swap(t1, t2);
         }
-		return true;       
+
+        intersect[0] = t1;
+
+        return true;
     }
 
     // BoundingBox boundingBox() const = 0;
