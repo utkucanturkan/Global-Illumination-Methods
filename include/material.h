@@ -12,6 +12,8 @@ struct Material {
         : color(std::move(color)), refractive_index(refractiveIndex), albedo(albedo),
           specular_exponent(specularExponent) {}
 
+	Material() {}
+
     glm::dvec3 color;
     float refractive_index;
     glm::dvec4 albedo;
