@@ -18,10 +18,10 @@ int main(int argc, char** argv) {
     RayTracer raytracer(camera, light);
 
     // Materials
-    Material ivory(glm::dvec3(0.4, 0.4, 0.3), 1.0, glm::dvec4(0.6, 0.3, 0.1, 0.0), 50.);
-    Material glass(glm::dvec3(0.6, 0.7, 0.8), 1.5, glm::dvec4(0.0, 0.5, 0.1, 0.8), 125.);
-    Material red_rubber(glm::dvec3(0.3, 0.1, 0.1), 1.0, glm::dvec4(0.9, 0.1, 0.0, 0.0), 10.);
-    Material mirror(glm::dvec3(1.0, 1.0, 1.0), 1.0, glm::dvec4(0.0, 10.0, 0.8, 0.0), 1425.);
+    Material ivory(     glm::dvec3(0.4, 0.4, 0.3), 1.0,     glm::dvec4(0.6, 0.3, 0.1, 0.0),     50.);
+    Material glass(     glm::dvec3(0.6, 0.7, 0.8), 1.0,     glm::dvec4(0.0, 0.2, 0.2, 0.7),     125.);
+    Material red_rubber(glm::dvec3(0.3, 0.1, 0.1), 1.0,     glm::dvec4(0.9, 0.1, 0.0, 0.0),     10.);
+    Material mirror(    glm::dvec3(1.0, 1.0, 1.0), 1.0,     glm::dvec4(0.1, 10.0, 0.8, 0.0),    1425.);
 
     // x, y, z
     Sphere* ivorySphere = &Sphere({-2, 3, -5}, 2, ivory);

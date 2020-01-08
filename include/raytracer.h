@@ -39,12 +39,11 @@ class RayTracer {
             for (int x = 0; x < w && _running; ++x) {
 
                 glm::dvec2 screenCoord((2.0f * x) / w - 1.0f, (-2.0f * y) / h + 1.0f);
-                Ray ray(_camera.pos,
-                        (forward + screenCoord.x * _w * right + screenCoord.y * _h * up));
+                Ray ray(_camera.pos, (forward + screenCoord.x * _w * right + screenCoord.y * _h * up));
 
-                glm::dvec3 pixelColor = traceRay(ray);
+                glm::dvec3 color = traceRay(ray);
 
-                _image->setPixel(x, y, pixelColor);
+                _image->setPixel(x, y, color);
             }
         }
     }
