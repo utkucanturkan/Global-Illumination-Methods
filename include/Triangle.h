@@ -11,7 +11,7 @@ struct Triangle : public Entity {
         v3 = c;
     }
 
-    bool intersect(const Ray& ray, glm::dvec3& intersect, glm::dvec3& normal) override {
+    bool intersect(const Ray& ray, double& intersectionDistance) override {
         float EPS = 0.0000001;
 
         glm::dvec3 ab = v2 - v1;
@@ -37,9 +37,8 @@ struct Triangle : public Entity {
         if (v < 0 || u + v > 1)
             return false;
 
-		double t = glm::dot(ac, qvec) * invDet;
-        intersect.x = t;
-        return (t > EPS) ? true : false;
+        intersectionDistance = glm::dot(ac, qvec) * invDet;
+        return (intersectionDistance > EPS) ? true : false;
     }
 
     glm::dvec3 v1;

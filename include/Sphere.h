@@ -7,29 +7,20 @@ struct Sphere : public Entity {
         pos = _position;
     }
 
-    bool intersect(const Ray& ray, glm::dvec3& intersect, glm::dvec3& normal) override {
+    bool intersect(const Ray& ray, double& intersectionDistance) override {
 
-        glm::dvec3 oc = ray.origin - pos;
-        float a = glm::dot(ray.dir, ray.dir);
-        float b = 2.0 * glm::dot(oc, ray.dir);
-        float c = glm::dot(oc, oc) - pow(radius, 2);
-        float discriminant = pow(b, 2) - 4 * a * c;
-
-        // the ray does not intersect
-        if (discriminant <= 0) {
+        glm::dvec3 L = pos - ray.origin;
+        double tca = glm::dot(L, ray.dir);
+        double d2 = glm::dot(L, L) - pow(tca, 2);
+        if (d2 > pow(radius, 2))
             return false;
-        }
-
-        // Find two points of intersection, t1 close and t2 far
-        float t1 = (-b - std::sqrt(discriminant)) / (2 * a);
-        float t2 = (-b + std::sqrt(discriminant)) / (2 * a);
-
-        if (t1 > t2) {
-            std::swap(t1, t2);
-        }
-
-        intersect[0] = t1;
-
+        double thc = sqrtf(pow(radius, 2) - d2);
+        intersectionDistance = tca - thc;
+        double t1 = tca + thc;
+        if (intersectionDistance < 0)
+            intersectionDistance = t1;
+        if (intersectionDistance < 0)
+            return false;
         return true;
     }
 
