@@ -5,7 +5,7 @@ struct Triangle : public Entity {
              const glm::dvec3& b,
              const glm::dvec3& c,
              const Material& _material)
-        : Entity(_material) {
+        : Entity(_material, 0) {
         v1 = a;
         v2 = b;
         v3 = c;

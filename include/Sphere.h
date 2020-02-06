@@ -3,7 +3,7 @@
 struct Sphere : public Entity {
 
     Sphere(const glm::dvec3 _position, const float _radius, const Material _material)
-        : Entity(_material), radius(_radius) {
+        : Entity(_material, _radius) {
         pos = _position;
     }
 
@@ -26,5 +26,5 @@ struct Sphere : public Entity {
 
     // BoundingBox boundingBox() const = 0;
 
-    float radius;
+    
 };
