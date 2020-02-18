@@ -74,19 +74,21 @@ class RayTracer {
     bool intersect(const Ray& ray, glm::dvec3& hitPoint, glm::dvec3& hitNormal, Material& material) {
         double spheres_dist = INFINITY;
         for (auto& e : _scene->intersect(ray)) {
-            if (e->pos.x != 0) {
-                double dist_i;
-                if (e->intersect(ray, dist_i) && (dist_i < spheres_dist)) {
-                    spheres_dist = dist_i;
-                    hitPoint = ray.origin + (ray.dir * dist_i);
-                    hitNormal = glm::normalize(hitPoint - e->pos);
-                    material = e->material;
-                }
+            if (e->pos.x == 0 && !isPathTracing) {
+                continue;
             }
+            double dist_i;
+            if (e->intersect(ray, dist_i) && (dist_i < spheres_dist)) {
+                spheres_dist = dist_i;
+                hitPoint = ray.origin + (ray.dir * dist_i);
+                hitNormal = glm::normalize(hitPoint - e->pos);
+                material = e->material;
+            }            
         }
 
         // PLANES
         double checkerboard_dist = INFINITY;
+        
         // BACK
         if (fabs(ray.dir.z) > 1e-3) {
             double d = -(ray.origin.z + 30) / ray.dir.z;
@@ -108,7 +110,9 @@ class RayTracer {
                 checkerboard_dist = d;
                 hitPoint = pt;
                 hitNormal = glm::dvec3(0, 1, 0);
-                material.color = (int(.5 * hitPoint.x + 1000) + int(.5 * hitPoint.z)) & 1 ? glm::dvec3(.3, .3, .3) : glm::dvec3(.3, .2, .1);
+                material.color = (int(.5 * hitPoint.x + 1000) + int(.5 * hitPoint.z)) & 1
+                                     ? glm::dvec3(.3, .3, .3)
+                                     : glm::dvec3(.3, .2, .1);
             }
         }
         // RIGHT
@@ -119,7 +123,9 @@ class RayTracer {
                 checkerboard_dist = d;
                 hitPoint = pt;
                 hitNormal = glm::dvec3(-1, 0, 0);
-                material.color = (int(.5 * hitPoint.x + 1000) + int(.5 * hitPoint.z)) & 1 ? glm::dvec3(.1, .5, .1) : glm::dvec3(.1, .5, .1);
+                material.color = (int(.5 * hitPoint.x + 1000) + int(.5 * hitPoint.z)) & 1
+                                     ? glm::dvec3(.1, .5, .1)
+                                     : glm::dvec3(.1, .5, .1);
             }
         }
         // LEFT
@@ -130,7 +136,9 @@ class RayTracer {
                 checkerboard_dist = d;
                 hitPoint = pt;
                 hitNormal = glm::dvec3(1, 0, 0);
-                material.color = (int(.5 * hitPoint.x + 1000) + int(.5 * hitPoint.z)) & 1 ? glm::dvec3(.5, .1, .1) : glm::dvec3(.5, .1, .1);
+                material.color = (int(.5 * hitPoint.x + 1000) + int(.5 * hitPoint.z)) & 1
+                                     ? glm::dvec3(.5, .1, .1)
+                                     : glm::dvec3(.5, .1, .1);
             }
         }
         // TOP
@@ -141,13 +149,18 @@ class RayTracer {
                 checkerboard_dist = d;
                 hitPoint = pt;
                 hitNormal = glm::dvec3(0, -1, 0);
-                material.color = (int(.5 * hitPoint.x + 1000) + int(.5 * hitPoint.z)) & 1 ? glm::dvec3(.2, .2, .5) : glm::dvec3(.2, .2, .5);
+                material.color = (int(.5 * hitPoint.x + 1000) + int(.5 * hitPoint.z)) & 1
+                                     ? glm::dvec3(.2, .2, .5)
+                                     : glm::dvec3(.2, .2, .5);
             }
         }
+        
+
         return std::min(spheres_dist, checkerboard_dist) < 1000;
     }
 
     glm::dvec3 traceRay(const Ray& ray, size_t depth = 0) {
+        isPathTracing = false;
         glm::dvec3 nearestIntersectionPoint, nearestNormal;
         Material material;
 
@@ -188,6 +201,7 @@ class RayTracer {
     }
 
     glm::dvec3 radiance(const Ray& ray, int depth, unsigned short* Xi, double E = 1.0) {
+        isPathTracing = true;
         glm::dvec3 intersectionPoint, normal;
         Material material;
 
@@ -294,4 +308,5 @@ class RayTracer {
     Camera _camera;
     std::vector<Light*> _lights;
     std::shared_ptr<Image> _image;
+    bool isPathTracing = false;
 };

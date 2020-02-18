@@ -2,13 +2,11 @@
 
 struct Sphere : public Entity {
 
-    Sphere(const glm::dvec3 _position, const float _radius, const Material _material)
-        : Entity(_material, _radius) {
+    explicit Sphere(const glm::dvec3 _position, const float _radius, const Material _material): Entity(_material, _radius) {
         pos = _position;
     }
 
     bool intersect(const Ray& ray, double& intersectionDistance) override {
-
         glm::dvec3 L = pos - ray.origin;
         double tca = glm::dot(L, ray.dir);
         double d2 = glm::dot(L, L) - pow(tca, 2);
@@ -24,7 +22,5 @@ struct Sphere : public Entity {
         return true;
     }
 
-    // BoundingBox boundingBox() const = 0;
-
-    
+    // BoundingBox boundingBox() const = 0;   
 };

@@ -4,6 +4,7 @@
 
 #include "Sphere.h"
 #include "Triangle.h"
+#include "TriangleMesh.h"
 #include "camera.h"
 #include "gui.h"
 
@@ -25,7 +26,6 @@ int main(int argc, char** argv) {
     Material mirror(glm::dvec3(1.0, 1.0, 1.0), 1.0, glm::dvec4(0.0, 10.0, 0.8, 0.0), 1425., MaterialType::Specular);
     Material light(glm::dvec3(1.0), 0, glm::dvec4(0), 0, MaterialType::Diffuse, glm::dvec3(4.0));
 
-
     // Set up scene
     Octree scene({-20, -20, -20}, {20, 20, 20});
     scene.push_back(new Sphere({-1, -8, -10}, 2, ivory));
@@ -33,7 +33,9 @@ int main(int argc, char** argv) {
     scene.push_back(new Sphere({7, -8, -10}, 2, red_rubber));
     scene.push_back(new Sphere({4, -8, -20}, 2, mirror));
     scene.push_back(new Sphere({0, 10, -15}, 2, light));
-    scene.push_back(new Triangle({0, 0, -10}, {50, 0, -10}, {50, 50, -10}, ivory));
+    scene.push_back(new Triangle({-8, -10, -6}, {-4, -10, -6}, {-6, -6, -6}, glass));
+    //scene.push_back(new Triangle({2, -10, -6}, {6, -10, -6}, {4, -6, -6}, glass));
+
 
     raytracer.setScene(&scene);
 
